@@ -1,0 +1,30 @@
+{
+  "name": "rollup-plugin-import-css-classes",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "A Rollup plugin to import CSS classes in Javascript.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kycermann/rollup-plugin-import-css-classes.git"
+  },
+  "keywords": [
+    "rollup-plugin",
+    "css",
+    "import",
+    "javascript",
+    "emcascript"
+  ],
+  "author": "Mieszko Kycermann <59399685+Kycermann@users.noreply.github.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Kycermann/rollup-plugin-import-css-classes/issues"
+  },
+  "homepage": "https://github.com/Kycermann/rollup-plugin-import-css-classes#readme",
+  "devDependencies": {
+    "rollup": "^4.12.1"
+  }
+}
