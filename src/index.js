@@ -15,7 +15,7 @@ export default (options = {}) => {
       const moduleInfo = this.getModuleInfo(id);
       
       if (!options.filter(id)) return;
-      if (moduleInfo.assertions?.type !== "css") return;
+      if (moduleInfo.attributes?.type !== "css") return;
 
       let cssCode = options.transform(sourceCode, id);
 
