@@ -48,7 +48,8 @@ export default (options = {}) => {
         ...oldClassNames.map(oldClassName => {
           const oldClassNameWithoutDot = oldClassName.slice(1);
           const variableName = kebabToCamel(oldClassNameWithoutDot);
-          const newClassName = oldToNewClassNames.get(oldClassName);
+          const newClassNameWithDot = oldToNewClassNames.get(oldClassName);
+          const newClassName = newClassNameWithDot.slice(1);
 
           return `export const ${variableName} = "${newClassName}";`;
         }),
