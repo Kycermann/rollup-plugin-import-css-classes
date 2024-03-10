@@ -28,7 +28,7 @@ export const MyDiv = () => (
 );
 ```
 
-It's OK to use the same class names in different `.css` files.
+It's OK to use the same class names across different `.css` files.
 
 ## Installation
 
