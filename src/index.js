@@ -32,6 +32,7 @@ export default (options = {}) => {
           ".mieszko",
           Date.now().toString(36).slice(3),
           (nextNumber++).toString(36),
+          oldClassName.slice(1),
         ].join("-");
 
         oldToNewClassNames.set(oldClassName, newClassName);
