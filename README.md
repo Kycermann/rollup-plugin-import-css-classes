@@ -1,5 +1,7 @@
 # rollup-plugin-import-css-classes
 
+Published to [npm](https://www.npmjs.com/package/rollup-plugin-import-css-classes).
+
 A Rollup plugin to import CSS classes in Javascript. Inspired by [rollup-plugin-import-css](https://github.com/jleeson/rollup-plugin-import-css) but that one returns a `CSSStyleSheet` and this one exports class names to use in your app.
 
 For ideas or if the docs are unclear, you are welcome to [open an issue](https://github.com/Kycermann/rollup-plugin-import-css-classes/issues/new).
