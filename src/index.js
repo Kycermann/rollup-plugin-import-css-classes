@@ -24,9 +24,15 @@ export default (options = {}) => {
       }
 
       const oldClassNames = extractClassNames(cssCode);
+
+      // Since we use find-and-replace to rename class names,
+      // we need to replace longer class names first to avoid
+      // conflicts with shorter class names.
+      const orderedOldClassNames = Array.from(oldClassNames).sort((a, b) => a < b ? 1 : -1);
+
       const oldToNewClassNames = new Map();
 
-      for (const oldClassName of oldClassNames) {
+      for (const oldClassName of orderedOldClassNames) {
         // NOTE: These class names are not deterministic across builds
         const newClassName = [
           ".mieszko",
