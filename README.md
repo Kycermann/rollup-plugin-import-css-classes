@@ -54,6 +54,23 @@ import css from "rollup-plugin-import-css-classes";
 export default {
   input: "index.js",
   output: { file: "dist/index.js", format: "esm" },
-  plugins: [ css() ]
+  plugins: [
+    // Default options shown below
+    // You can leave them all out and just use `css()`
+    css({
+      // Apply transformations to the CSS code
+      transform: (cssCode) => cssCode,
+
+      // Choose which files to process, default:
+      filter: (filePath) => filePath.endsWith(".css"),
+
+      // Vite doesn't support checking import attributes
+      // so you can disable the "type": "css" check
+      checkAttributes: false,
+
+      // Minify the CSS code
+      minify: true,
+    }),
+  ]
 };
 ```

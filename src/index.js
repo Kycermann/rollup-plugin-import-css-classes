@@ -5,6 +5,7 @@ import { minifyCSS } from "./utils/minifyCSS.js";
 export default (options = {}) => {
   options.transform ??= (code) => code;
   options.filter ??= (filePath) => filePath.endsWith(".css");
+  options.checkAttributes ??= true;
 
   let nextNumber = 1;
 
@@ -15,7 +16,10 @@ export default (options = {}) => {
       const moduleInfo = this.getModuleInfo(id);
       
       if (!options.filter(id)) return;
-      if (moduleInfo.attributes?.type !== "css") return;
+
+      if (options.checkAttributes && moduleInfo.attributes?.type !== "css") {
+        return;
+      }
 
       let cssCode = options.transform(sourceCode, id);
 
