@@ -61,12 +61,12 @@ export default {
       // Apply transformations to the CSS code
       transform: (cssCode) => cssCode,
 
-      // Choose which files to process, default:
-      filter: (filePath) => filePath.endsWith(".css"),
+      // Choose which files can import CSS:
+      // By default, it's .js, .jsx, .ts, .tsx
+      canImportCss: (file) => file.endsWith(".tsx"),
 
-      // Vite doesn't support checking import attributes
-      // so you can disable the "type": "css" check
-      checkAttributes: false,
+      // Choose which CSS files can be imported:
+      cssFileExtentions: [".css"],
 
       // Minify the CSS code
       minify: true,

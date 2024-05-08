@@ -1,25 +1,54 @@
+import path from "path";
 import { extractClassNames } from "./utils/extractClassNames.js";
 import { kebabToCamel } from "./utils/kebabToCamel.js";
 import { minifyCSS } from "./utils/minifyCSS.js";
+import * as fs from "fs/promises";
+
+const javascriptExts = [".js", ".jsx", ".ts", ".tsx"];
 
 export default (options = {}) => {
   options.transform ??= (code) => code;
-  options.filter ??= (filePath) => filePath.endsWith(".css");
-  options.checkAttributes ??= true;
+  options.canImportCss ??= (filePath) => javascriptExts.some(ext => filePath.endsWith(ext));
+  options.cssFileExtentions ??= [".css"];
 
   let nextNumber = 1;
+  
+  // Only transform the CSS files that are imported using an import statement
+  const cssFiles = new Set();
+
+  // Internally, we rename imports to end in .css.mieszko.js to ensure that
+  // they are treated as Javasscript files
+  const cssFileExtentions = options.cssFileExtentions.map(ext => ext + ".mieszko.js");
 
   return {
     name: "import-css-classes",
 
-    transform(sourceCode, id) {
-      const moduleInfo = this.getModuleInfo(id);
-      
-      if (!options.filter(id)) return;
-
-      if (options.checkAttributes && moduleInfo.attributes?.type !== "css") {
-        return;
+    async resolveId(source, importer) {
+      if (source.endsWith(".css.mieszko.js")) {
+        return {
+          id: path.join(path.dirname(importer), source),
+        };
       }
+    },
+
+    async load(id) {
+      // Transform code imports to end in .js
+      if (options.canImportCss(id) && !cssFileExtentions.some(ext => id.endsWith(ext))) {
+        const sourceCode = await fs.readFile(id, "utf-8");
+        const code = updateCSSImportPaths(sourceCode, path.dirname(id), cssFiles, options.cssFileExtentions);
+
+        return {
+          code,
+          moduleSideEffects: true,
+          attributes: { type: "javascript" },
+        };
+      }
+
+      const cssFilePath = id.slice(0, -".mieszko.js".length);
+
+      if (!cssFiles.has(cssFilePath)) return;
+      
+      const sourceCode = await fs.readFile(cssFilePath, "utf-8");
 
       let cssCode = options.transform(sourceCode, id);
 
@@ -68,9 +97,12 @@ export default (options = {}) => {
       ];
 
       const code = codeParts.join("");
-      const map = { mappings: "" };
 
-      return { code, map };
+      return {
+        code,
+        moduleSideEffects: true,
+        attributes: { type: "javascript" },
+      };
     },
   };
 };
